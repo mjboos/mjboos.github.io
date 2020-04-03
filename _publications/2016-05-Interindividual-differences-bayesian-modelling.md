@@ -2,7 +2,7 @@
 
 title: "Probabilistic inference: task dependency and individual differences of probability weighting revealed by hierarchical Bayesian modeling."
 collection: publications
-permalink: /publication/2016-05-Interindividual-differences-bayesian-modelling.md
+permalink: /publication/2016-05-Interindividual-differences-bayesian-modelling
 excerpt: 'We use Hierarchical Bayesian Modelling to compare models of decision making under uncertainty with varying degrees of inter-individual differences.'
 date: 2016-05-31
 venue: 'Frontiers in psychology, 7, 755'
