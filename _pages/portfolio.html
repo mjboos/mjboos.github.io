@@ -1,6 +1,6 @@
 ---
 layout: archive
-title: "Portfolio"
+title: "Data Science Portfolio"
 permalink: /portfolio/
 author_profile: true
 ---
