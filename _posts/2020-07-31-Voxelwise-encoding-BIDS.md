@@ -96,3 +96,6 @@ plotting.plot_stat_map(mean_scores, threshold=0.1)
 
 
 And voilà, we see that we can predict activity in the auditory areas.
+
+You can download this notebook [here](http://mjboos.github.io/files/GMM_autograd.ipynb).
+
