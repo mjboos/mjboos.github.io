@@ -71,6 +71,24 @@ with open('lagging_config.json', 'w+') as fl:
 Now we just need [this](https://github.com/mjboos/voxelwiseencoding) BIDS app for running the analysis.
 Running this cell will fit voxel-wise encoding models, which right now need about 8 Gig of RAM. 
 
+### Using Docker to run the voxelwise-encoding BIDS app
+
+You can use Docker to build/get an image that already includes all libraries:
+
+
+```python
+!git clone https://github.com/mjboos/voxelwiseencoding
+!mkdir output
+# we need to mount a config folder for our json files
+!mkdir config
+!cp *config.json config/
+!docker run -i --rm -v ds002322-download/derivatives:bids_dataset/:ro -v config/:/config:ro -v output/:/output mjboos/voxelwiseencoding /bids_dataset /output --task alice --skip_bids_validator --participant_label 18 --preprocessing-config /config/lagging_config.json --encoding-config /config/encoding_config.json --detrend --standardize zscore 
+```
+
+### Alternative: run the module directly
+
+Alternatively you can install the required libraries directly and run the Python script yourself.
+
 
 ```python
 !git clone https://github.com/mjboos/voxelwiseencoding
@@ -90,7 +108,6 @@ mean_scores = mean_img('output/sub-18_task-alice_scores.nii.gz')
 from nilearn import plotting
 plotting.plot_stat_map(mean_scores, threshold=0.1)
 ```
-
 
 ![png](/images/BIDS_app_mean_scores.png)
 
