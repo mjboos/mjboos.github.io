@@ -129,5 +129,6 @@ plt.legend()
 
 ![](/images/GMM_autograd_6_1.png)
 
+
 You can download this notebook [here](http://mjboos.github.io/files/GMM_autograd.ipynb).
 
