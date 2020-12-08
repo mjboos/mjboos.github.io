@@ -8,6 +8,6 @@ redirect_from:
   - /about.html
 ---
 
-I am broadly interested in how machine learning can help us understand the brain better.
-For this I use models of various kinds to predict brain activity (in MEG, ECoG, and fMRI) from a complex auditory stimulus.
-Specifically, I focus on how probabilistic unsupervised learning fits into this picture, and how to increase the interpretability of Deep Neuronal Networks to harness their potential for predicting brain activity.
+I am broadly interested in how machine learning can help us understand the brain better and how to build open tools that make research easier and more reproducible.
+Specifically, I focus on the potential of probabilistic unsupervised learning as stimulus representations and how to increase the interpretability of Deep Neuronal Networks to harness their potential for predicting brain activity.
+
