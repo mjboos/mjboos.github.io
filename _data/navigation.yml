@@ -1,10 +1,10 @@
 # main links links
 main:
+  - title: "Projects"
+    url: /portfolio/
+  - title: "Blogposts"
+    url: /year-archive/
   - title: "Publications"
     url: /publications/
-  - title: "Data Science Portfolio"
-    url: /portfolio/
-  - title: "Posts"
-    url: /year-archive/
   - title: "CV"
     url: /cv/
