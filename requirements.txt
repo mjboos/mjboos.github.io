@@ -1,0 +1,21 @@
+# Sphinx and core extensions
+sphinx>=7.0
+myst-nb>=1.0
+pydata-sphinx-theme>=0.14
+
+# ABlog for blogging
+# Note: ablog may have installation issues with feedgen on some systems
+# If you encounter errors, try: pip install --no-build-isolation ablog
+ablog>=0.11
+
+# Additional Sphinx extensions
+sphinx-design>=0.5
+sphinx-copybutton>=0.5
+sphinxext-opengraph>=0.9
+
+# Jupyter support
+jupyter
+ipykernel
+
+# Optional but recommended
+nox  # Build automation
