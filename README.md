@@ -1,31 +1,195 @@
-A Github Pages template for academic websites. This was forked (then detached) by [Stuart Geiger](https://github.com/staeiou) from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/), which is © 2016 Michael Rose and released under the MIT License. See LICENSE.md.
+# Personal Website - Moritz Boos
 
-I think I've got things running smoothly and fixed some major bugs, but feel free to file issues or make pull requests if you want to improve the generic template / theme.
+This is my personal website built with [Sphinx](https://www.sphinx-doc.org/) and [MyST Markdown](https://myst-parser.readthedocs.io/), deployed to GitHub Pages.
 
-### Note: if you are using this repo and now get a notification about a security vulnerability, delete the Gemfile.lock file. 
+**Live site**: [https://mjboos.github.io](https://mjboos.github.io)
 
-# Instructions
+## About
 
-1. Register a GitHub account if you don't have one and confirm your e-mail (required!)
-1. Fork [this repository](https://github.com/academicpages/academicpages.github.io) by clicking the "fork" button in the top right. 
-1. Go to the repository's settings (rightmost item in the tabs that start with "Code", should be below "Unwatch"). Rename the repository "[your GitHub username].github.io", which will also be your website's URL.
-1. Set site-wide configuration and create content & metadata (see below -- also see [this set of diffs](http://archive.is/3TPas) showing what files were changed to set up [an example site](https://getorg-testacct.github.io) for a user with the username "getorg-testacct")
-1. Upload any files (like PDFs, .zip files, etc.) to the files/ directory. They will appear at https://[your GitHub username].github.io/files/example.pdf.  
-1. Check status by going to the repository settings, in the "GitHub pages" section
-1. (Optional) Use the Jupyter notebooks or python scripts in the `markdown_generator` folder to generate markdown files for publications and talks from a TSV file.
+This site includes:
+- **Blog**: Posts about Python, machine learning, neuroscience, and data science
+- **Publications**: Academic publications and preprints
+- **Projects**: Open source projects and tools
 
-See more info at https://academicpages.github.io/
+## Technology Stack
 
-## To run locally (not on GitHub Pages, to serve on your own computer)
+- **Static Site Generator**: Sphinx with MyST-NB
+- **Theme**: [PyData Sphinx Theme](https://pydata-sphinx-theme.readthedocs.io/)
+- **Blog**: [ABlog](https://ablog.readthedocs.io/)
+- **Package Manager**: [uv](https://github.com/astral-sh/uv) (fast Python package installer)
+- **Deployment**: GitHub Actions → GitHub Pages
 
-1. Clone the repository and made updates as detailed above
-1. Make sure you have ruby-dev, bundler, and nodejs installed: `sudo apt install ruby-dev ruby-bundler nodejs`
-1. Run `bundle clean` to clean up the directory (no need to run `--force`)
-1. Run `bundle install` to install ruby dependencies. If you get errors, delete Gemfile.lock and try again.
-1. Run `bundle exec jekyll liveserve` to generate the HTML and serve it from `localhost:4000` the local server will automatically rebuild and refresh the pages on change.
+## Building the Site
 
-# Changelog -- bugfixes and enhancements
+### Prerequisites
 
-There is one logistical issue with a ready-to-fork template theme like academic pages that makes it a little tricky to get bug fixes and updates to the core theme. If you fork this repository, customize it, then pull again, you'll probably get merge conflicts. If you want to save your various .yml configuration files and markdown files, you can delete the repository and fork it again. Or you can manually patch. 
+- [uv](https://github.com/astral-sh/uv) (recommended, 10-100x faster than pip)
+- OR Python 3.11+ and pip
 
-To support this, all changes to the underlying code appear as a closed issue with the tag 'code change' -- get the list [here](https://github.com/academicpages/academicpages.github.io/issues?q=is%3Aclosed%20is%3Aissue%20label%3A%22code%20change%22%20). Each issue thread includes a comment linking to the single commit or a diff across multiple commits, so those with forked repositories can easily identify what they need to patch.
+### Installing uv
+
+**macOS and Linux:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Windows:**
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**With pip:**
+```bash
+pip install uv
+```
+
+See [uv installation docs](https://docs.astral.sh/uv/getting-started/installation/) for more options.
+
+### Local Development with uv (Recommended)
+
+1. **Install dependencies**:
+   ```bash
+   uv sync
+   ```
+
+   This creates a virtual environment and installs all dependencies from `pyproject.toml`.
+
+2. **Build the site**:
+   ```bash
+   # Build with uv run (recommended)
+   uv run sphinx-build -b html . _build/html
+
+   # Or use nox
+   uv run nox -s docs
+   ```
+
+3. **Live preview** (with auto-reload):
+   ```bash
+   uv run nox -s docs -- live
+   ```
+
+   This will open the site in your browser at `http://localhost:8000` and automatically rebuild when you make changes.
+
+### Alternative: Using pip
+
+If you prefer pip over uv:
+
+```bash
+pip install -r requirements.txt
+sphinx-build -b html . _build/html
+```
+
+**Note**: You may encounter installation issues with `ablog` (specifically with `feedgen`). If so, try:
+```bash
+pip install --no-build-isolation ablog
+```
+
+The built site will be in `_build/html/`.
+
+## Project Structure
+
+```
+.
+├── blog/              # Blog posts organized by year
+│   ├── 2020/
+│   ├── 2021/
+│   └── 2022/
+├── _static/           # Static assets (CSS, images, etc.)
+├── _templates/        # Custom Sphinx templates
+├── conf.py            # Sphinx configuration
+├── pyproject.toml     # Project metadata and dependencies
+├── uv.lock            # Lockfile for reproducible builds
+├── .python-version    # Python version specification
+├── index.md           # Homepage
+├── about.md           # About page
+├── blog.md            # Blog index
+├── publications.md    # Publications list
+├── projects.md        # Projects list
+├── requirements.txt   # Python dependencies (for pip compatibility)
+└── noxfile.py        # Build automation
+```
+
+## Adding Content
+
+### New Blog Post
+
+1. Create a new markdown or Jupyter notebook file in `blog/YYYY/` (where YYYY is the year)
+2. Add frontmatter:
+   ```yaml
+   ---
+   date: "YYYY-MM-DD"
+   author: Moritz Boos
+   tags:
+     - tag1
+     - tag2
+   ---
+
+   # Post Title
+
+   Content goes here...
+   ```
+
+### New Jupyter Notebook Post
+
+Simply place a `.ipynb` file in `blog/YYYY/` with appropriate metadata. The notebook will be rendered directly.
+
+## Managing Dependencies
+
+Dependencies are managed in `pyproject.toml` under the `[project]` section.
+
+### Adding a New Dependency
+
+1. Add the package to `pyproject.toml`:
+   ```toml
+   [project]
+   dependencies = [
+       # ... existing deps
+       "new-package>=1.0",
+   ]
+   ```
+
+2. Update lockfile and install:
+   ```bash
+   uv lock
+   uv sync
+   ```
+
+### Updating Dependencies
+
+```bash
+# Update all dependencies to latest compatible versions
+uv lock --upgrade
+
+# Update a specific package
+uv lock --upgrade-package sphinx
+
+# Install updated dependencies
+uv sync
+```
+
+### Compatibility Note
+
+`requirements.txt` is kept for backward compatibility with pip users, but `pyproject.toml` is the source of truth.
+
+## Deployment
+
+The site is automatically deployed to GitHub Pages via GitHub Actions when you push to the `master` branch.
+
+The workflow is defined in `.github/workflows/deploy.yml`.
+
+## Configuration
+
+Main configuration is in `conf.py`. Key settings:
+
+- **Extensions**: myst_nb, ablog, sphinx_design, sphinx_copybutton, sphinxext.opengraph
+- **Theme**: pydata_sphinx_theme
+- **Blog settings**: Post pattern, feeds, excerpts
+- **Notebook execution**: Currently set to "off" (change to "cache" to execute during build)
+
+## Migration Notes
+
+This site was migrated from Jekyll to MyST+Sphinx. See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for details.
+
+## License
+
+Content is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

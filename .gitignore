@@ -1,3 +1,16 @@
 _site/
 *~
 
+# Sphinx build artifacts
+_build/
+.jupyter_cache/
+.nox/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
