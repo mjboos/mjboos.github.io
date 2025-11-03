@@ -47,29 +47,25 @@ See [uv installation docs](https://docs.astral.sh/uv/getting-started/installatio
 
 ### Local Development with uv (Recommended)
 
-1. **Create virtual environment and install dependencies**:
+1. **Install dependencies**:
    ```bash
-   uv venv
-   uv pip install -r requirements.txt
+   uv sync
    ```
+
+   This creates a virtual environment and installs all dependencies from `pyproject.toml`.
 
 2. **Build the site**:
    ```bash
-   # Activate the virtual environment
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-   # Build with Sphinx
-   sphinx-build -b html . _build/html
+   # Build with uv run (recommended)
+   uv run sphinx-build -b html . _build/html
 
    # Or use nox
-   nox -s docs
+   uv run nox -s docs
    ```
 
 3. **Live preview** (with auto-reload):
    ```bash
-   source .venv/bin/activate
-   pip install sphinx-autobuild
-   sphinx-autobuild . _build/html --open-browser --port=8000
+   uv run nox -s docs -- live
    ```
 
    This will open the site in your browser at `http://localhost:8000` and automatically rebuild when you make changes.
@@ -101,14 +97,15 @@ The built site will be in `_build/html/`.
 ├── _static/           # Static assets (CSS, images, etc.)
 ├── _templates/        # Custom Sphinx templates
 ├── conf.py            # Sphinx configuration
-├── pyproject.toml     # Project configuration (for uv and Sphinx)
+├── pyproject.toml     # Project metadata and dependencies
+├── uv.lock            # Lockfile for reproducible builds
 ├── .python-version    # Python version specification
 ├── index.md           # Homepage
 ├── about.md           # About page
 ├── blog.md            # Blog index
 ├── publications.md    # Publications list
 ├── projects.md        # Projects list
-├── requirements.txt   # Python dependencies
+├── requirements.txt   # Python dependencies (for pip compatibility)
 └── noxfile.py        # Build automation
 ```
 
@@ -138,29 +135,41 @@ Simply place a `.ipynb` file in `blog/YYYY/` with appropriate metadata. The note
 
 ## Managing Dependencies
 
+Dependencies are managed in `pyproject.toml` under the `[project]` section.
+
 ### Adding a New Dependency
 
-1. Add the package to `requirements.txt`:
-   ```
-   new-package>=1.0
+1. Add the package to `pyproject.toml`:
+   ```toml
+   [project]
+   dependencies = [
+       # ... existing deps
+       "new-package>=1.0",
+   ]
    ```
 
-2. Install the updated dependencies:
+2. Update lockfile and install:
    ```bash
-   uv pip install -r requirements.txt
-   # or with pip
-   pip install -r requirements.txt
+   uv lock
+   uv sync
    ```
 
 ### Updating Dependencies
 
 ```bash
-# With uv (faster)
-uv pip install --upgrade -r requirements.txt
+# Update all dependencies to latest compatible versions
+uv lock --upgrade
 
-# With pip
-pip install --upgrade -r requirements.txt
+# Update a specific package
+uv lock --upgrade-package sphinx
+
+# Install updated dependencies
+uv sync
 ```
+
+### Compatibility Note
+
+`requirements.txt` is kept for backward compatibility with pip users, but `pyproject.toml` is the source of truth.
 
 ## Deployment
 

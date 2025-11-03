@@ -1,5 +1,37 @@
 # This is a documentation project, not a Python package
-# Dependencies are listed in requirements.txt and installed via uv pip install
+# By omitting [build-system], uv treats this as a "virtual project"
+# Dependencies are installed but the project itself is not built/installed
+
+[project]
+name = "mjboos-website"
+version = "2.0.0"
+description = "Personal website of Moritz Boos - Data Scientist and Neuroscientist"
+authors = [
+    {name = "Moritz Boos", email = "moritz.boos@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "CC-BY-4.0"}
+
+dependencies = [
+    "sphinx>=7.0",
+    "myst-nb>=1.0",
+    "pydata-sphinx-theme>=0.14",
+    "ablog>=0.11",
+    "sphinx-design>=0.5",
+    "sphinx-copybutton>=0.5",
+    "sphinxext-opengraph>=0.9",
+    "jupyter",
+    "ipykernel",
+    "nox",
+]
+
+[project.urls]
+Homepage = "https://mjboos.github.io"
+Repository = "https://github.com/mjboos/mjboos.github.io"
+"Google Scholar" = "https://scholar.google.de/citations?user=iMjcWsAAAAAJ"
+
+# Note: No [build-system] table - this tells uv not to build/install the project
 
 [tool.uv]
 # uv configuration for this project
