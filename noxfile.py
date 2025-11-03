@@ -10,7 +10,18 @@ nox.options.reuse_existing_virtualenvs = True
 @nox.session(venv_backend="uv")
 def docs(session):
     """Build the documentation."""
-    session.install(".")
+    # Install dependencies from pyproject.toml without building the package
+    session.install(
+        "sphinx>=7.0,<8.0",
+        "myst-nb>=1.0,<2.0",
+        "pydata-sphinx-theme>=0.14,<1.0",
+        "ablog>=0.11,<1.0",
+        "sphinx-design>=0.5,<1.0",
+        "sphinx-copybutton>=0.5,<1.0",
+        "sphinxext-opengraph>=0.9,<1.0",
+        "jupyter",
+        "ipykernel",
+    )
 
     if "live" in session.posargs:
         # Live preview with auto-reload

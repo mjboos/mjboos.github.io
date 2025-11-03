@@ -36,13 +36,17 @@ jobs:
       - name: Set up Python
         run: uv python install
 
+      - name: Create virtual environment
+        run: uv venv
+
       - name: Install dependencies
         run: |
-          uv sync
+          uv pip install -r requirements.txt
 
       - name: Build Sphinx site
         run: |
-          uv run sphinx-build -b html . _build/html
+          source .venv/bin/activate
+          sphinx-build -b html . _build/html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
