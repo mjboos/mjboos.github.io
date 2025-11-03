@@ -1,0 +1,40 @@
+[project]
+name = "mjboos-website"
+version = "2.0.0"
+description = "Personal website of Moritz Boos - Data Scientist and Neuroscientist"
+authors = [
+    {name = "Moritz Boos", email = "moritz.boos@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "CC-BY-4.0"}
+
+dependencies = [
+    "sphinx>=7.0,<8.0",
+    "myst-nb>=1.0,<2.0",
+    "pydata-sphinx-theme>=0.14,<1.0",
+    "ablog>=0.11,<1.0",
+    "sphinx-design>=0.5,<1.0",
+    "sphinx-copybutton>=0.5,<1.0",
+    "sphinxext-opengraph>=0.9,<1.0",
+    "jupyter",
+    "ipykernel",
+    "nox",
+]
+
+[project.urls]
+Homepage = "https://mjboos.github.io"
+Repository = "https://github.com/mjboos/mjboos.github.io"
+"Google Scholar" = "https://scholar.google.de/citations?user=iMjcWsAAAAAJ"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = []
+
+[tool.sphinx]
+# Sphinx build configuration hints
+source-dir = "."
+build-dir = "_build"

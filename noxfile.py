@@ -1,14 +1,16 @@
 """
 Nox sessions for building and serving the documentation.
+
+Uses uv for fast package installation.
 """
 import nox
 
 nox.options.reuse_existing_virtualenvs = True
 
-@nox.session
+@nox.session(venv_backend="uv")
 def docs(session):
     """Build the documentation."""
-    session.install("-r", "requirements.txt")
+    session.install(".")
 
     if "live" in session.posargs:
         # Live preview with auto-reload

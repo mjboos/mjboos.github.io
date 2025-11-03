@@ -16,25 +16,40 @@ This site includes:
 - **Static Site Generator**: Sphinx with MyST-NB
 - **Theme**: [PyData Sphinx Theme](https://pydata-sphinx-theme.readthedocs.io/)
 - **Blog**: [ABlog](https://ablog.readthedocs.io/)
+- **Package Manager**: [uv](https://github.com/astral-sh/uv) (fast Python package installer)
 - **Deployment**: GitHub Actions → GitHub Pages
 
 ## Building the Site
 
 ### Prerequisites
 
-- Python 3.11+
-- pip
+- [uv](https://github.com/astral-sh/uv) (recommended, 10-100x faster than pip)
+- OR Python 3.11+ and pip
 
-### Local Development
+### Installing uv
+
+**macOS and Linux:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Windows:**
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**With pip:**
+```bash
+pip install uv
+```
+
+See [uv installation docs](https://docs.astral.sh/uv/getting-started/installation/) for more options.
+
+### Local Development with uv (Recommended)
 
 1. **Install dependencies**:
    ```bash
-   pip install -r requirements.txt
-   ```
-
-   **Note**: If you encounter issues installing `ablog` (specifically with `feedgen`), try:
-   ```bash
-   pip install --no-build-isolation ablog
+   uv sync
    ```
 
 2. **Build the site**:
@@ -43,7 +58,7 @@ This site includes:
    nox -s docs
 
    # Or build with Sphinx directly
-   sphinx-build -b html . _build/html
+   uv run sphinx-build -b html . _build/html
    ```
 
 3. **Live preview** (with auto-reload):
@@ -53,13 +68,18 @@ This site includes:
 
    This will open the site in your browser at `http://localhost:8000` and automatically rebuild when you make changes.
 
-### Manual Build
+### Alternative: Using pip
 
-If you don't want to use `nox`, you can build manually:
+If you prefer pip over uv:
 
 ```bash
 pip install -r requirements.txt
 sphinx-build -b html . _build/html
+```
+
+**Note**: You may encounter installation issues with `ablog` (specifically with `feedgen`). If so, try:
+```bash
+pip install --no-build-isolation ablog
 ```
 
 The built site will be in `_build/html/`.
@@ -75,12 +95,15 @@ The built site will be in `_build/html/`.
 ├── _static/           # Static assets (CSS, images, etc.)
 ├── _templates/        # Custom Sphinx templates
 ├── conf.py            # Sphinx configuration
+├── pyproject.toml     # Project metadata and dependencies
+├── uv.lock            # Lockfile for reproducible builds
+├── .python-version    # Python version specification
 ├── index.md           # Homepage
 ├── about.md           # About page
 ├── blog.md            # Blog index
 ├── publications.md    # Publications list
 ├── projects.md        # Projects list
-├── requirements.txt   # Python dependencies
+├── requirements.txt   # Python dependencies (legacy, for pip users)
 └── noxfile.py        # Build automation
 ```
 
@@ -107,6 +130,45 @@ The built site will be in `_build/html/`.
 ### New Jupyter Notebook Post
 
 Simply place a `.ipynb` file in `blog/YYYY/` with appropriate metadata. The notebook will be rendered directly.
+
+## Managing Dependencies
+
+### Adding a New Dependency
+
+1. Add the package to `pyproject.toml` under `dependencies`:
+   ```toml
+   dependencies = [
+       # ... existing deps
+       "new-package>=1.0",
+   ]
+   ```
+
+2. Update the lockfile:
+   ```bash
+   uv lock
+   ```
+
+3. Install the updated dependencies:
+   ```bash
+   uv sync
+   ```
+
+### Updating Dependencies
+
+```bash
+# Update all dependencies to latest compatible versions
+uv lock --upgrade
+
+# Update a specific package
+uv lock --upgrade-package sphinx
+
+# Sync after updating
+uv sync
+```
+
+### Using with pip (Legacy)
+
+If you need to use pip, the `requirements.txt` file is maintained for backward compatibility. However, `pyproject.toml` is the source of truth.
 
 ## Deployment
 
